@@ -1,26 +1,21 @@
 import { Input as KInput } from "@ui-kitten/components";
-import Text from "../../Typography/Text";
+import Caption from "./Caption";
 
 const Input = ({
   value,
   label,
   helperText,
   placeholder,
-  onChangeText,
   secureTextEntry,
+  onChange,
 }) => {
-
-  const renderCaption = () => {
-    return <Text>{helperText}</Text>;
-  };
-
   return (
     <KInput
       value={value}
       label={label}
-      caption={renderCaption}
+      caption={() => Caption(helperText)}
       placeholder={placeholder}
-      onChangeText={onChangeText}
+      onChangeText={onChange}
       secureTextEntry={secureTextEntry}
     />
   );
