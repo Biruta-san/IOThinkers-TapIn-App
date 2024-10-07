@@ -13,7 +13,12 @@ const App = () => {
       <NavigationContainer>
         <Stack.Navigator initialRouteName={initialRouteName}>
           {routes.map((route, index) => (
-            <Stack.Screen key={index} name={route.name} component={route.component} options={route.options} />
+            <Stack.Screen
+              key={index}
+              name={route.name}
+              component={route.component}
+              options={route.options}
+            />
           ))}
         </Stack.Navigator>
       </NavigationContainer>
