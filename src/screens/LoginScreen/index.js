@@ -45,7 +45,7 @@ const LoginScreen = ({ navigation }) => {
       <Layout style={{ flex: 1, backgroundColor: retriveColorString() }}>
         <Layout flex={4}>
           <MaterialIcons name="location-pin" size={120} color="white" />
-          <Text category={"h1"} style={{ color: "white" }}>
+          <Text category={"h1"} color={'white'}>
             Tap In
           </Text>
         </Layout>
