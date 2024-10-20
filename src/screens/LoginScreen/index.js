@@ -45,7 +45,7 @@ const LoginScreen = ({ navigation }) => {
       <Layout style={{ flex: 1, backgroundColor: retriveColorString() }}>
         <Layout flex={4}>
           <MaterialIcons name="location-pin" size={120} color="white" />
-          <Text category={"h1"} color={'white'}>
+          <Text category={"h1"} color={"white"}>
             Tap In
           </Text>
         </Layout>
@@ -85,10 +85,10 @@ const LoginScreen = ({ navigation }) => {
               onChange={setPassword}
               isPassword
             />
-            <BaseButton loading={loading} onPress={handleLogin}>
-              Entrar
-            </BaseButton>
           </Layout>
+          <BaseButton loading={loading} onPress={handleLogin}>
+            <Text color={"white"}>Entrar</Text>
+          </BaseButton>
         </Layout>
       </Layout>
     </SafeAreaView>

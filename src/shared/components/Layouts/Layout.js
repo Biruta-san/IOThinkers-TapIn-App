@@ -11,17 +11,27 @@ const Layout = ({
   bg,
   borderRadius,
   style,
-  flex
+  flex,
+  flexDirection,
+  flexDir,
+  paddingTop,
+  pt,
+  alignItems,
+  justifyContent,
+  gap,
 }) => {
   const styles = StyleSheet.create({
     container: {
       flex: flex || 1,
-      justifyContent: "center",
-      alignItems: "center",
+      flexDirection: flexDirection || flexDir || "column",
+      justifyContent: justifyContent || "center",
+      alignItems: alignItems || "center",
       backgroundColor: bg || retriveColorString(styleType, weigth),
       height: height || "100%",
       width: width || "100%",
       borderRadius: borderRadius || 0,
+      paddingTop: paddingTop || pt || 0,
+      gap: gap || 0,
     },
   });
 
