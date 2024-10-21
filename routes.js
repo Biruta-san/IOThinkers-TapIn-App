@@ -14,6 +14,6 @@ const routes = [
   },
 ];
 
-export const initialRouteName = "Login";
+export const initialRouteName = "Main";
 
 export default routes;

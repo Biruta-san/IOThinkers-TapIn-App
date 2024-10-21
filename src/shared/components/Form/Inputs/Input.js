@@ -3,6 +3,7 @@ import Caption from "./Caption";
 import { StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
+import { retriveColorString } from "../../../utils/enums/styleEnums";
 
 const Input = ({
   value,
@@ -13,10 +14,12 @@ const Input = ({
   style,
   marginTop,
   isPassword,
+  w,
+  width,
 }) => {
   const styles = StyleSheet.create({
     container: {
-      width: "80%",
+      width: w ?? width ?? "80%",
       borderRadius: 10,
       marginTop: marginTop ?? 0,
     },
@@ -34,8 +37,8 @@ const Input = ({
         <TouchableWithoutFeedback onPress={handleVisibilityChange}>
           <MaterialIcons
             name={passwordVisible ? "visibility" : "visibility-off"}
-            size={24}
-            color="black"
+            size={20}
+            color={retriveColorString()}
           />
         </TouchableWithoutFeedback>
       )

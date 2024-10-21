@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <ApplicationProvider {...eva} theme={{ ...eva, ...theme }}>
+    <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName={initialRouteName}>
           {routes.map((route, index) => (

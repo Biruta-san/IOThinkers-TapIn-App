@@ -4,10 +4,13 @@ import {
 } from "@ui-kitten/components";
 import Caption from "./Caption";
 
-const RangeDatepicker = ({ range, onSelect, placeholder, helperText }) => {
-  // Function to handle the datepicker state
-  // const [range, setRange] = React.useState({});
-
+const RangeDatepicker = ({
+  range,
+  onSelect,
+  label,
+  placeholder,
+  helperText,
+}) => {
   const i18n = {
     dayNames: {
       short: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"],
@@ -57,13 +60,13 @@ const RangeDatepicker = ({ range, onSelect, placeholder, helperText }) => {
     i18n,
     startDayOfWeek: 1,
   });
-  // const formatDateService = new NativeDateService("pt", {i18n, format: "DD/MM/YYYY"});
 
   return (
     <KRangeDatePicker
       range={range}
       onSelect={onSelect}
       dateService={localeDateService}
+      label={label}
       placeholder={placeholder}
       caption={() => Caption(helperText)}
     />

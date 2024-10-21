@@ -6,10 +6,16 @@ import { retriveColorString } from "../../shared/utils/enums/styleEnums";
 import Accordion from "react-native-collapsible/Accordion";
 import { Divider } from "@ui-kitten/components";
 import SearchButton from "../../shared/components/Form/Buttons/SearchButton";
+import Input from "../../shared/components/Form/Inputs/Input";
+import RangeDatepicker from "../../shared/components/Form/Inputs/RangeDatePicker";
+import NumericInput from "../../shared/components/Form/Inputs/NumericInput";
 
 const FindScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [activeSections, setActiveSections] = useState([]);
+  const [onde, setOnde] = useState(null);
+  const [quando, setQuando] = useState({});
+  const [quantasPessoas, setQuantasPessoas] = useState(null);
 
   const handleCloseModal = () => {
     setModalVisible(false);
@@ -36,15 +42,38 @@ const FindScreen = ({ navigation }) => {
   const SECTIONS = [
     {
       title: "Para onde?",
-      content: <Text>First content</Text>,
+      content: (
+        <Input
+          value={onde}
+          w={"100%"}
+          onChange={(value) => setOnde(value)}
+          label={"Destino da viagem"}
+          placeholder={"Informe a cidade ou hotel"}
+        />
+      ),
     },
     {
       title: "Quando?",
-      content: <Text>Second content</Text>,
+      content: (
+        <RangeDatepicker
+          range={quando}
+          onSelect={(nextRange) => setQuando(nextRange)}
+          label={"Período da viagem"}
+          placeholder={"Selecione o período"}
+        />
+      ),
     },
     {
       title: "Quantas Pessoas?",
-      content: <Text>Third content</Text>,
+      content: (
+        <NumericInput
+          value={quantasPessoas}
+          onChange={(value) => setQuantasPessoas(value)}
+          w={"100%"}
+          placeholder={"Quantidade de pessoas"}
+          label={"Informe a quantidade de pessoas"}
+        />
+      ),
     },
   ];
 
@@ -74,7 +103,7 @@ const FindScreen = ({ navigation }) => {
           <TouchableOpacity
             style={styles.touch}
             activeOpacity={1}
-            onPress={() => setModalVisible(true)} 
+            onPress={() => setModalVisible(true)}
           >
             <View style={styles.container}>
               <SearchIcon />
@@ -216,35 +245,3 @@ const styles = StyleSheet.create({
 });
 
 export default FindScreen;
-
-// return (
-//   <View style={styles.container}>
-//     {/* Button to open the modal */}
-//     <TouchableOpacity
-//       onPress={() => setModalVisible(true)}
-//       style={styles.openButton}
-//     >
-//       <Text style={styles.buttonText}>Open Modal</Text>
-//     </TouchableOpacity>
-
-//     {/* Modal */}
-//     <Modal
-//       animationType="slide" // Can also use "fade" or "none"
-//       transparent={false} // Set to false to ensure full screen modal
-//       visible={modalVisible}
-//       onRequestClose={() => setModalVisible(false)} // Optional close handler
-//     >
-//       <View style={styles.modalContent}>
-//         <Text style={styles.modalText}>This is a full-screen modal!</Text>
-
-//         {/* Button to close the modal */}
-//         <TouchableOpacity
-//           onPress={() => setModalVisible(false)}
-//           style={styles.closeButton}
-//         >
-//           <Text style={styles.buttonText}>Close Modal</Text>
-//         </TouchableOpacity>
-//       </View>
-//     </Modal>
-//   </View>
-// );
