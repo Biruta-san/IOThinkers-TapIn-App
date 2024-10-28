@@ -14,10 +14,11 @@ const MainScreen = () => {
       icon: route.icon,
     }))
   );
+
+  // Correctly create renderScene using static keys for SceneMap
   const renderScene = SceneMap(
     tabRoutes.reduce((acc, route) => {
       acc[route.name] = route.component;
-      key = route.name;
       return acc;
     }, {})
   );
@@ -29,19 +30,21 @@ const MainScreen = () => {
         renderScene={renderScene}
         onIndexChange={setIndex}
         tabBarPosition={"bottom"}
-        renderTabBar={(props) => (
-          <TabBar
-            renderLabel={({ route, focused, color }) => (
-              <Text fontSize={12} useThemeColor fontWeight={"bold"}>
-                {route.title}
-              </Text>
-            )}
-            renderIcon={({ route, focused, color }) => <route.icon />}
-            indicatorStyle={{ backgroundColor: retriveColorString() }}
-            style={{ backgroundColor: "white" }}
-            {...props}
-          />
-        )}
+        renderTabBar={(props) => {
+          return (
+            <TabBar
+              renderLabel={({ route, focused, color }) => (
+                <Text fontSize={12} useThemeColor fontWeight={"bold"}>
+                  {route.title}
+                </Text>
+              )}
+              renderIcon={({ route, focused, color }) => <route.icon />}
+              indicatorStyle={{ backgroundColor: retriveColorString() }}
+              style={{ backgroundColor: "white" }}
+              {...props}
+            />
+          );
+        }}
       />
     </SafeAreaView>
   );

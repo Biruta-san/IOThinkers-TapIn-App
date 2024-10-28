@@ -1,6 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../../shared/components/Layouts/Layout";
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { retriveColorString } from "../../shared/utils/enums/styleEnums";
 import Accordion from "react-native-collapsible/Accordion";
@@ -9,6 +16,7 @@ import SearchButton from "../../shared/components/Form/Buttons/SearchButton";
 import Input from "../../shared/components/Form/Inputs/Input";
 import RangeDatepicker from "../../shared/components/Form/Inputs/RangeDatePicker";
 import NumericInput from "../../shared/components/Form/Inputs/NumericInput";
+import { generateHotelsList } from "../../shared/utils/mocks/hotel";
 
 const FindScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -16,6 +24,18 @@ const FindScreen = ({ navigation }) => {
   const [onde, setOnde] = useState(null);
   const [quando, setQuando] = useState({});
   const [quantasPessoas, setQuantasPessoas] = useState(null);
+  const [listHoteis, setListHoteis] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      handleSearchHoteis();
+    };
+    fetchData();
+  }, []);
+
+  const handleSearchHoteis = async () => {
+    setListHoteis(generateHotelsList(10));
+  };
 
   const handleCloseModal = () => {
     setModalVisible(false);
@@ -38,6 +58,22 @@ const FindScreen = ({ navigation }) => {
   const renderContent = (section) => {
     return <View style={styles.accordionContent}>{section.content}</View>;
   };
+
+  const renderHotelCard = ({ item }) => (
+    <View style={styles.hotelCard}>
+      {/* <Image
+        source={{ uri: `data:image/jpeg;base64,${item.imagens[0].base64}` }}
+        style={styles.hotelImage}
+      /> */}
+      <View style={styles.hotelInfo}>
+        <Text style={styles.hotelName}>{item.nome}</Text>
+        <Text style={styles.hotelLocation}>
+          {item.cidade}, {item.endereco}, {item.numero}
+        </Text>
+        <Text style={styles.hotelPrice}>Diária: R$ {item.valorDiaria}</Text>
+      </View>
+    </View>
+  );
 
   const SECTIONS = [
     {
@@ -111,6 +147,14 @@ const FindScreen = ({ navigation }) => {
             </View>
           </TouchableOpacity>
         </View>
+        <View style={styles.listView}>
+          <FlatList
+            data={listHoteis}
+            renderItem={renderHotelCard}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerStyle={styles.listView}
+          />
+        </View>
       </Layout>
       <Modal
         animationType="fade"
@@ -160,6 +204,12 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     borderRadius: 10,
+  },
+  listView: {
+    width: "100%",
+    paddingTop: 10,
+    marginBottom: 30,
+    paddingHorizontal: 20,
   },
   touch: {
     height: "100%",
@@ -241,6 +291,41 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 16,
+  },
+
+  hotelCard: {
+    flexDirection: "row",
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 10,
+    marginVertical: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  hotelImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+  },
+  hotelInfo: {
+    flex: 1,
+    paddingLeft: 10,
+  },
+  hotelName: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  hotelLocation: {
+    color: "#555",
+    fontSize: 14,
+  },
+  hotelPrice: {
+    color: retriveColorString(),
+    fontWeight: "bold",
+    fontSize: 14,
   },
 });
 

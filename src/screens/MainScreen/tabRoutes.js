@@ -2,7 +2,7 @@ import { FontAwesome, FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
 import { retriveColorString } from "../../shared/utils/enums/styleEnums";
 import FindScreen from "./FindScreen";
 import ReservesScreen from "./ReservesScreen";
-import UserScreen from "./UserScreen";
+// import UserScreen from "./UserScreen";
 
 const SearchIcon = () => {
   return <FontAwesome name="search" size={16} color={retriveColorString()} />;
@@ -33,12 +33,12 @@ export const tabRoutes = [
     options: { headerShown: false },
     icon: ReservesIcon,
   },
-  {
-    name: "Usuário",
-    component: UserScreen,
-    options: { headerShown: false },
-    icon: UserIcon,
-  },
+  // {
+  //   name: "Usuário",
+  //   component: UserScreen,
+  //   options: { headerShown: false },
+  //   icon: UserIcon,
+  // },
 ];
 
 export const initialTabRouteName = "Buscar";
