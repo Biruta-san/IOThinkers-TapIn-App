@@ -4,8 +4,8 @@ import {
   FlatList,
   Modal,
   StyleSheet,
-  Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -17,14 +17,21 @@ import Input from "../../shared/components/Form/Inputs/Input";
 import RangeDatepicker from "../../shared/components/Form/Inputs/RangeDatePicker";
 import NumericInput from "../../shared/components/Form/Inputs/NumericInput";
 import { generateHotelsList } from "../../shared/utils/mocks/hotel";
+import { useNavigation } from "@react-navigation/native";
+import {
+  SimpleImageSlider,
+  SimpleImageSliderThemeProvider,
+} from "@one-am/react-native-simple-image-slider";
+import Text from "../../shared/components/Typography/Text";
 
-const FindScreen = ({ navigation }) => {
+const FindScreen = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [activeSections, setActiveSections] = useState([]);
   const [onde, setOnde] = useState(null);
   const [quando, setQuando] = useState({});
   const [quantasPessoas, setQuantasPessoas] = useState(null);
   const [listHoteis, setListHoteis] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,21 +66,45 @@ const FindScreen = ({ navigation }) => {
     return <View style={styles.accordionContent}>{section.content}</View>;
   };
 
-  const renderHotelCard = ({ item }) => (
-    <View style={styles.hotelCard}>
-      {/* <Image
-        source={{ uri: `data:image/jpeg;base64,${item.imagens[0].base64}` }}
-        style={styles.hotelImage}
-      /> */}
-      <View style={styles.hotelInfo}>
-        <Text style={styles.hotelName}>{item.nome}</Text>
-        <Text style={styles.hotelLocation}>
-          {item.cidade}, {item.endereco}, {item.numero}
+  const renderPageCounter = (props) => {
+    return (
+      <View style={{ backgroundColor: "white", ...props.style, padding: 4, borderRadius: 4 }}>
+        <Text fontSize={12} useThemeColor fontWeight={'bold'}>
+          {props.currentPage} de {props.totalPages}
         </Text>
-        <Text style={styles.hotelPrice}>Diária: R$ {item.valorDiaria}</Text>
       </View>
-    </View>
-  );
+    );
+  };
+
+  const renderHotelCard = ({ item }) => {
+    const fotos = [
+      `https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/40/e5/50/20190118-193234-largejpg.jpg`,
+      `https://www.civitatis.com/blog/wp-content/uploads/2022/11/downtown-orlando-florida.jpg`,
+    ];
+    return (
+      <TouchableWithoutFeedback
+        onPress={() => {
+          navigation.navigate("Reservar", { hotelId: item.id });
+        }}
+      >
+        <View style={styles.hotelCard}>
+          <SimpleImageSlider
+            data={fotos.map((x, i) => ({ source: x, key: i.toString() }))}
+            fullScreenEnabled={true}
+            imageStyle={styles.hotelImage}
+            PageCounterComponent={renderPageCounter}
+          />
+          <View style={styles.hotelInfo}>
+            <Text style={styles.hotelName}>{item.nome}</Text>
+            <Text style={styles.hotelLocation}>
+              {item.cidade}, {item.endereco}, {item.numero}
+            </Text>
+            <Text style={styles.hotelPrice}>Diária: R$ {item.valorDiaria}</Text>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  };
 
   const SECTIONS = [
     {
@@ -148,12 +179,14 @@ const FindScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View style={styles.listView}>
-          <FlatList
-            data={listHoteis}
-            renderItem={renderHotelCard}
-            keyExtractor={(item) => item.id.toString()}
-            contentContainerStyle={styles.listView}
-          />
+          <SimpleImageSliderThemeProvider>
+            <FlatList
+              data={listHoteis}
+              renderItem={renderHotelCard}
+              keyExtractor={(item) => item.id.toString()}
+              contentContainerStyle={styles.listView}
+            />
+          </SimpleImageSliderThemeProvider>
         </View>
       </Layout>
       <Modal
@@ -294,7 +327,7 @@ const styles = StyleSheet.create({
   },
 
   hotelCard: {
-    flexDirection: "row",
+    flexDirection: "column",
     backgroundColor: "#fff",
     borderRadius: 8,
     padding: 10,
@@ -306,9 +339,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   hotelImage: {
-    width: 60,
-    height: 60,
+    // Increase height for a larger image
     borderRadius: 8,
+    resizeMode: "cover",
   },
   hotelInfo: {
     flex: 1,
