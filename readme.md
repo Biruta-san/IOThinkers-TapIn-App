@@ -1,1 +1,1 @@
-# IOThinkers - TappIn - Aplicativo mobile
+# IOThinkers - TapIn - Aplicativo mobile
