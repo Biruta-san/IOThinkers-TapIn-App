@@ -1,24 +1,8 @@
-import { FontAwesome, FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
-import { retriveColorString } from "../../shared/utils/enums/styleEnums";
 import FindScreen from "./FindScreen";
 import ReservesScreen from "./ReservesScreen";
+import SearchIcon from "../../shared/components/Icons/SearchIcon";
+import ReservesIcon from "../../shared/components/Icons/ReservesIcon";
 // import UserScreen from "./UserScreen";
-
-const SearchIcon = () => {
-  return <FontAwesome name="search" size={16} color={retriveColorString()} />;
-};
-
-const ReservesIcon = () => {
-  return (
-    <FontAwesome6 name="ticket-simple" size={16} color={retriveColorString()} />
-  );
-};
-
-const UserIcon = () => {
-  return (
-    <FontAwesome5 name="user-alt" size={16} color={retriveColorString()} />
-  );
-};
 
 export const tabRoutes = [
   {

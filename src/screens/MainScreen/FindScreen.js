@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { retriveColorString } from "../../shared/utils/enums/styleEnums";
-import Accordion from "react-native-collapsible/Accordion";
 import { Divider } from "@ui-kitten/components";
 import SearchButton from "../../shared/components/Form/Buttons/SearchButton";
 import Input from "../../shared/components/Form/Inputs/Input";
@@ -21,10 +20,12 @@ import Text from "../../shared/components/Typography/Text";
 import Card from "../../shared/components/Cards/Card";
 import ImageSlider from "../../shared/components/Media/ImageSlider";
 import { TouchableWithoutFeedback } from "@ui-kitten/components/devsupport";
+import CustomAccordion from "../../shared/components/Accordion/CustomAccordion";
+import SearchIcon from "../../shared/components/Icons/SearchIcon";
+import CloseIcon from "../../shared/components/Icons/CloseIcon";
 
 const FindScreen = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [activeSections, setActiveSections] = useState([]);
   const [onde, setOnde] = useState(null);
   const [quando, setQuando] = useState({});
   const [quantasPessoas, setQuantasPessoas] = useState(null);
@@ -49,24 +50,6 @@ const FindScreen = (props) => {
 
   const handleCloseModal = () => {
     setModalVisible(false);
-    setActiveSections([]);
-  };
-
-  const renderHeader = (section, _, isActive) => {
-    return (
-      <>
-        <Text style={isActive ? styles.activeTitle : styles.inactiveTitle}>
-          {section.title}
-        </Text>
-        <Divider
-          style={{ backgroundColor: retriveColorString(), height: 1.5 }}
-        />
-      </>
-    );
-  };
-
-  const renderContent = (section) => {
-    return <View style={styles.accordionContent}>{section.content}</View>;
   };
 
   const HotelCard = ({ item }) => {
@@ -128,25 +111,6 @@ const FindScreen = (props) => {
     },
   ];
 
-  const SearchIcon = () => {
-    return <FontAwesome name="search" size={16} color={retriveColorString()} />;
-  };
-
-  const CloseIcon = () => {
-    return <Ionicons name="close" size={16} color={retriveColorString()} />;
-  };
-
-  const renderTouchable = (section) => {
-    return (
-      <TouchableOpacity
-        onPress={section.onPress}
-        style={styles.accordionHeader}
-      >
-        {section.children}
-      </TouchableOpacity>
-    );
-  };
-
   return (
     <Layout flex={1}>
       <Layout flex={1} justifyContent={"start"} bg={"white"} paddingTop={10}>
@@ -183,19 +147,8 @@ const FindScreen = (props) => {
             </TouchableOpacity>
           </View>
           <View style={styles.accordionContainer}>
-            <Accordion
-              sections={SECTIONS}
-              activeSections={activeSections}
-              renderHeader={renderHeader}
-              renderContent={renderContent}
-              onChange={(activeSections) => {
-                setActiveSections(activeSections);
-              }}
-              touchableComponent={renderTouchable}
-              underlayColor="transparent"
-            />
+            <CustomAccordion sections={SECTIONS} />
           </View>
-
           <SearchButton>
             <Text style={styles.buttonText}>Buscar</Text>
           </SearchButton>
