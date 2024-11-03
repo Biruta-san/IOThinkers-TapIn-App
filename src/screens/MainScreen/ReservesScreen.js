@@ -4,6 +4,8 @@ import Text from "../../shared/components/Typography/Text";
 import { generateUserReservesList } from "../../shared/utils/mocks/hotel";
 import Layout from "../../shared/components/Layouts/Layout";
 import { retriveColorString } from "../../shared/utils/enums/styleEnums";
+import Card from "../../shared/components/Cards/Card";
+import ImageSlider from "../../shared/components/Media/ImageSlider";
 
 const ReservesScreen = ({ navigation }) => {
   const [listAgendamentos, setListAgendamentos] = useState([]);
@@ -16,19 +18,22 @@ const ReservesScreen = ({ navigation }) => {
     setListAgendamentos(generateUserReservesList(10));
   };
 
-  const renderItem = ({ item }) => (
-    <View style={styles.hotelCard}>
-      <View style={styles.hotelInfo}>
-        <Text category={"h6"} fontWeight={"bold"} useThemeColor>
-          {item.hotelNome}
-        </Text>
-        <Text>Endereço: {item.hotelEndereco}</Text>
-        <Text>Quarto Número: {item.hotelQuartoNumero}</Text>
-        <Text>Check-in: {item.checkIn}</Text>
-        <Text>Check-out: {item.checkOut}</Text>
-      </View>
-    </View>
-  );
+  const renderItem = ({ item }) => {
+    return (
+      <Card>
+        <View style={styles.hotelInfo}>
+          <Text category={"h6"} fontWeight={"bold"} useThemeColor>
+            {item.hotelNome}
+          </Text>
+          <Text>{item.hotelEndereco}</Text>
+          <Text>Quarto: {item.hotelQuartoNumero}</Text>
+          <Text>
+            {new Date(item.checkIn).toLocaleDateString()} - {new Date(item.checkOut).toLocaleDateString()}
+          </Text>
+        </View>
+      </Card>
+    );
+  };
 
   return (
     <Layout flex={1} bg={"white"}>
@@ -82,20 +87,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     marginBottom: 30,
     paddingHorizontal: 20,
-  },
-
-  hotelCard: {
-    width: "100%",
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    padding: 10,
-    marginVertical: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   hotelImage: {
     width: 60,

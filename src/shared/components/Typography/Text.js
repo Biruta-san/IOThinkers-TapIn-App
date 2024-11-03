@@ -10,7 +10,7 @@ const Text = ({
   weigth,
   style,
   fontSize,
-  fontWeight
+  fontWeight,
 }) => {
   const getSize = () => {
     switch (category) {
@@ -35,13 +35,13 @@ const Text = ({
       case "h1":
       case "h2":
       case "h3":
-        return 'bold';
+        return "bold";
       case "h4":
       case "h5":
       case "h6":
-        return 'normal';
+        return "normal";
       default:
-        return 'normal';
+        return "normal";
     }
   };
 
@@ -49,19 +49,13 @@ const Text = ({
     text: {
       color: useThemeColor
         ? retriveColorString(styleType, weigth)
-        : color ?? "black",
+        : color ?? "#202020",
       fontSize: fontSize ?? getSize(),
-      fontWeight: fontWeight ?? getWeight()
+      fontWeight: fontWeight ?? getWeight(),
     },
   });
 
-  return (
-    <RText
-      style={style ?? styles.text}
-    >
-      {children}
-    </RText>
-  );
+  return <RText style={style ?? styles.text}>{children}</RText>;
 };
 
 export default Text;

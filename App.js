@@ -4,10 +4,12 @@ import * as eva from "@eva-design/eva";
 import theme from "./theme.json";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import routes, { initialRouteName } from "./routes";
+import { LogBox } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  LogBox.ignoreAllLogs(true);
   return (
     <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
       <NavigationContainer>

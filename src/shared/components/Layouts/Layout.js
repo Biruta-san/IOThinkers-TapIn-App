@@ -16,8 +16,12 @@ const Layout = ({
   flexDir,
   paddingTop,
   pt,
+  padding,
+  p,
   alignItems,
   justifyContent,
+  borderTopLeftRadius,
+  borderTopRightRadius,
   gap,
 }) => {
   const styles = StyleSheet.create({
@@ -30,6 +34,9 @@ const Layout = ({
       height: height || "100%",
       width: width || "100%",
       borderRadius: borderRadius || 0,
+      borderTopLeftRadius: borderTopLeftRadius || 0,
+      borderTopRightRadius: borderTopRightRadius || 0,
+      padding: padding || p || 0,
       paddingTop: paddingTop || pt || 0,
       gap: gap || 0,
     },

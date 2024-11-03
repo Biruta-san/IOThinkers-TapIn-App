@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import Layout from "../../shared/components/Layouts/Layout";
 import {
-  FlatList,
   Modal,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -18,11 +17,10 @@ import RangeDatepicker from "../../shared/components/Form/Inputs/RangeDatePicker
 import NumericInput from "../../shared/components/Form/Inputs/NumericInput";
 import { generateHotelsList } from "../../shared/utils/mocks/hotel";
 import { useNavigation } from "@react-navigation/native";
-import {
-  SimpleImageSlider,
-  SimpleImageSliderThemeProvider,
-} from "@one-am/react-native-simple-image-slider";
 import Text from "../../shared/components/Typography/Text";
+import Card from "../../shared/components/Cards/Card";
+import ImageSlider from "../../shared/components/Media/ImageSlider";
+import { TouchableWithoutFeedback } from "@ui-kitten/components/devsupport";
 
 const FindScreen = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -32,6 +30,11 @@ const FindScreen = (props) => {
   const [quantasPessoas, setQuantasPessoas] = useState(null);
   const [listHoteis, setListHoteis] = useState([]);
   const navigation = useNavigation();
+
+  const fotos = [
+    `https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/40/e5/50/20190118-193234-largejpg.jpg`,
+    `https://www.civitatis.com/blog/wp-content/uploads/2022/11/downtown-orlando-florida.jpg`,
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +52,7 @@ const FindScreen = (props) => {
     setActiveSections([]);
   };
 
-  const renderReader = (section, _, isActive) => {
+  const renderHeader = (section, _, isActive) => {
     return (
       <>
         <Text style={isActive ? styles.activeTitle : styles.inactiveTitle}>
@@ -66,34 +69,15 @@ const FindScreen = (props) => {
     return <View style={styles.accordionContent}>{section.content}</View>;
   };
 
-  const renderPageCounter = (props) => {
-    return (
-      <View style={{ backgroundColor: "white", ...props.style, padding: 4, borderRadius: 4 }}>
-        <Text fontSize={12} useThemeColor fontWeight={'bold'}>
-          {props.currentPage} de {props.totalPages}
-        </Text>
-      </View>
-    );
-  };
-
-  const renderHotelCard = ({ item }) => {
-    const fotos = [
-      `https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/40/e5/50/20190118-193234-largejpg.jpg`,
-      `https://www.civitatis.com/blog/wp-content/uploads/2022/11/downtown-orlando-florida.jpg`,
-    ];
+  const HotelCard = ({ item }) => {
     return (
       <TouchableWithoutFeedback
         onPress={() => {
-          navigation.navigate("Reservar", { hotelId: item.id });
+          navigation.navigate("Reservar", { hotelId: item.id, item });
         }}
       >
-        <View style={styles.hotelCard}>
-          <SimpleImageSlider
-            data={fotos.map((x, i) => ({ source: x, key: i.toString() }))}
-            fullScreenEnabled={true}
-            imageStyle={styles.hotelImage}
-            PageCounterComponent={renderPageCounter}
-          />
+        <Card>
+          <ImageSlider images={fotos} />
           <View style={styles.hotelInfo}>
             <Text style={styles.hotelName}>{item.nome}</Text>
             <Text style={styles.hotelLocation}>
@@ -101,7 +85,7 @@ const FindScreen = (props) => {
             </Text>
             <Text style={styles.hotelPrice}>Diária: R$ {item.valorDiaria}</Text>
           </View>
-        </View>
+        </Card>
       </TouchableWithoutFeedback>
     );
   };
@@ -174,19 +158,16 @@ const FindScreen = (props) => {
           >
             <View style={styles.container}>
               <SearchIcon />
-              <Text>Find Screen</Text>
+              <Text>Pesquisar</Text>
             </View>
           </TouchableOpacity>
         </View>
         <View style={styles.listView}>
-          <SimpleImageSliderThemeProvider>
-            <FlatList
-              data={listHoteis}
-              renderItem={renderHotelCard}
-              keyExtractor={(item) => item.id.toString()}
-              contentContainerStyle={styles.listView}
-            />
-          </SimpleImageSliderThemeProvider>
+          <ScrollView contentContainerStyle={styles.scrollViewContent}>
+            {listHoteis.map((hotel, index) => (
+              <HotelCard key={index} item={hotel} />
+            ))}
+          </ScrollView>
         </View>
       </Layout>
       <Modal
@@ -205,7 +186,7 @@ const FindScreen = (props) => {
             <Accordion
               sections={SECTIONS}
               activeSections={activeSections}
-              renderHeader={renderReader}
+              renderHeader={renderHeader}
               renderContent={renderContent}
               onChange={(activeSections) => {
                 setActiveSections(activeSections);
@@ -239,10 +220,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   listView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
     width: "100%",
     paddingTop: 10,
-    marginBottom: 30,
+  },
+  scrollViewContent: {
     paddingHorizontal: 20,
+    alignItems: "center",
   },
   touch: {
     height: "100%",
@@ -325,21 +311,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
   },
-
-  hotelCard: {
-    flexDirection: "column",
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    padding: 10,
-    marginVertical: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
   hotelImage: {
-    // Increase height for a larger image
     borderRadius: 8,
     resizeMode: "cover",
   },
